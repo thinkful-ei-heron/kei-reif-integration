@@ -4,7 +4,7 @@ const data = require('../playstore');
 const { expect } = require('chai');
 
 describe('test the app', () => {
-  it('/apps should return all [apps] + 200', async () => {
+  it('/apps should return all [apps] + 200', () => {
     return supertest(app)
       .get('/apps')
       .expect(200)
@@ -21,7 +21,12 @@ describe('test the app', () => {
   });
   // /apps?sort=app should return sorted apps by name
   // /apps?sort=rating should return sorted apps by rating
-  // /apps?genre??? 400
+  it('/apps?genre??? 400', () => {
+    return supertest(app)
+      .get('/apps')
+      .query({ genre: 'test' })
+      .expect(400);
+  });
   // /apps?genre(does exist) should return filtered list with only that genre
   // /apps?sort+genre should return filtered and sorted list
 });

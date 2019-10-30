@@ -39,6 +39,7 @@ app.get('/apps', (req, res) => {
       res.status(400).json({ error: 'genre does not exist' });
     }
   }
+
   res.status(200).json(sortedData);
 });
 
