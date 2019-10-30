@@ -20,7 +20,7 @@ app.get('/apps', (req, res) => {
       // sort by rating
       sortedData = appsData.sort((a, b) => (a.Rating > b.Rating ? 1 : -1));
     } else {
-      res.status(400).json({ error: 'sort should be rating or app' });
+      return res.status(400).json({ error: 'sort should be rating or app' });
     }
   } else {
     sortedData = appsData;
@@ -36,7 +36,7 @@ app.get('/apps', (req, res) => {
         item.Genres.toLowerCase().includes(req.query.genre)
       );
     } else {
-      res.status(400).json({ error: 'genre does not exist' });
+      return res.status(400).json({ error: 'genre does not exist' });
     }
   }
 
