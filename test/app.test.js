@@ -19,6 +19,12 @@ describe('test the app', () => {
       .query({ sort: '' })
       .expect(400);
   });
+  it('/apps?sort is not valid 400', () => {
+    return supertest(app)
+      .get('/apps')
+      .query({ sort: 'test' })
+      .expect(400);
+  });
   it('/apps?sort=app should return sorted apps by name', () => {
     return supertest(app)
       .get('/apps')
@@ -37,12 +43,43 @@ describe('test the app', () => {
           expect(res.body[res.body.length - 1].Rating).to.equal(4.7);
       });
   });
-  it('/apps?genre??? 400', () => {
+  it('/apps?genre does not exist 400', () => {
+    return supertest(app)
+      .get('/apps')
+      .query({ genre: '' })
+      .expect(400);
+  });
+  it('/apps?genre??? is not a valid genre 400', () => {
     return supertest(app)
       .get('/apps')
       .query({ genre: 'test' })
       .expect(400);
   });
-  // /apps?genre(does exist) should return filtered list with only that genre
-  // /apps?sort+genre should return filtered and sorted list
+  it('/apps?genre exists and returns filtered list', () => {
+    return supertest(app)
+      .get('/apps')
+      .query({ genre: 'puzzle'})
+      .then(res => {
+        expect(res.body[0].App).to.equal('Block Puzzle Classic Legend !') &&
+          expect(res.body[res.body.length - 1].App).to.equal('Block Puzzle');
+      });
+  });
+  it('/apps?sort: rating +genre should return filtered and sorted list', () => {
+    return supertest(app)
+      .get('/apps')
+      .query({ sort: 'rating', genre: 'puzzle'})
+      .then(res => {
+        expect(res.body[0].App).to.equal('Block Puzzle Classic Legend !') &&
+          expect(res.body[res.body.length - 1].App).to.equal('Block Puzzle');
+      });
+  });
+  it('/apps?sort: rating +genre should return filtered and sorted list', () => {
+    return supertest(app)
+      .get('/apps')
+      .query({ genre: 'puzzle', sort: 'app'})
+      .then(res => {
+        expect(res.body[0].App).to.equal('Block Puzzle') &&
+          expect(res.body[res.body.length - 1].App).to.equal('Block Puzzle Classic Legend !');
+      });
+  });
 });

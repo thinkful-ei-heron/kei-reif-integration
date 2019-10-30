@@ -13,10 +13,10 @@ app.get('/apps', (req, res) => {
   let sortedData;
 
   if ('sort' in req.query) {
-    if (req.query.sort == 'app') {
+    if (req.query.sort === 'app') {
       // sort by App (app name)
       sortedData = appsData.sort((a, b) => (a.App > b.App ? 1 : -1));
-    } else if (req.query.sort == 'rating') {
+    } else if (req.query.sort === 'rating') {
       // sort by rating
       sortedData = appsData.sort((a, b) => (a.Rating > b.Rating ? 1 : -1));
     } else {
